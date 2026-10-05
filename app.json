@@ -3,10 +3,16 @@
     "name": "Mahadev Seeker",
     "slug": "mahadev-seeker",
     "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#000000",
+      "resizeMode": "contain"
+    },
     "android": {
       "package": "com.mahadev.seeker",
-      "permissions": ["FOREGROUND_SERVICE"]
+      "versionCode": 3
     },
-    "platforms": ["android"]
+    "plugins": []
   }
 }
