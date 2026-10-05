@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width"><title>Mahadev Engine v2</title>
+<style>body{background:#07070a;color:#fff;font-family:monospace;padding:12px}.card{background:#111;border:1px solid #222;border-radius:12px;padding:12px;margin:10px 0}.active{border-color:#00ff88!important;background:#0a1a12}.green{color:#00ff88}.red{color:#ff4444}.gold{color:#ffd700} button{background:#222;color:#fff;border:1px solid #333;padding:8px 12px;border-radius:8px;margin:3px}</style>
+</head><body>
+<h2>🔱 Mahadev Engine v2 - 24x7 Auto</h2>
+<div class="card" id="activeBox">Loading active modules...</div>
+<div class="card">Funds: <button onclick="setF(25)">25%</button> <button onclick="setF(50)">50%</button> <button onclick="setF(75)">75%</button> <button onclick="setF(0)">Paper Only</button> <span id="fund" class="gold">25%</span></div>
+<div class="card"><h3>🏆 Current Top 4 (Active for 6H)</h3><div id="top4"></div></div>
+<div class="card"><h3>📊 All 12 Modules (Last 24H)</h3><div id="all"></div></div>
+<script>
+async function load(){
+ const a = await fetch('./active_modules.json?t='+Date.now()).then(r=>r.json()).catch(()=>null);
+ const s = await fetch('./modules_stats.json?t='+Date.now()).then(r=>r.json()).catch(()=>null);
+ if(a){ document.getElementById('activeBox').innerHTML=`<b>Cycle ${a.cycleId}</b> | Valid till ${new Date(a.validTill).toLocaleString()}<br>ACTIVE: <span class="green">${a.top4Names.join(', ')}</span> - REAL TRADES`; document.getElementById('top4').innerHTML=a.top4.map(m=>`<div class="card active">#${m.module} Score:${m.score} PnL:₹${m.pnl} WR:${m.winRate}% PF:${m.profitFactor}</div>`).join(''); }
+ if(s){ document.getElementById('all').innerHTML=s.all.map(m=>`<div style="display:flex;justify-content:space-between;border-bottom:1px solid #222;padding:6px"><span>${m.module}</span><span class="${m.pnl>=0?'green':'red'}">₹${m.pnl} | ${m.winRate}% | Score:${m.score}</span></div>`).join(''); }
+}
+function setF(p){ localStorage.setItem('fund',p); document.getElementById('fund').innerText=p+'%'; fetch('./config.json').catch(()=>{}); alert('Funds set to '+p+'% - Update config.js FUNDS_PERCENT to '+p); }
+load(); setInterval(load,30000);
+</script></body></html>
