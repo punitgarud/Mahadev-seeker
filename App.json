@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Mahadev Seeker",
+    "slug": "mahadev-seeker",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.mahadev.seeker",
+      "versionCode": 1
+    },
+    "platforms": ["android"]
+  }
+}
