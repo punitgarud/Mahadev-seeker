@@ -1,0 +1,20 @@
+name: Mahadev 24x7 Engine
+on:
+  schedule: [{ cron: '*/30 * * * *' }]
+  workflow_dispatch:
+permissions: { contents: write }
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm install axios @solana/web3.js || true
+      - run: node engine.js
+      - run: |
+          git config user.name "mahadev-bot"
+          git config user.email "bot@mahadev.com"
+          git add *.json
+          git diff --staged --quiet || git commit -m "cycle $(date -u)"
+          git push
