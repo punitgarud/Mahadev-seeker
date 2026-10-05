@@ -12,7 +12,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
       - run: npm install
       - run: npx expo prebuild --platform android --clean
       - run: chmod +x android/gradlew
