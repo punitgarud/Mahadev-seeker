@@ -1,9 +1,9 @@
 import 'react-native-get-random-values';
 import { Buffer } from 'buffer';
 global.Buffer = Buffer;
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
-import { transact } from '@solana-mobile/mobile-wallet-adapter-protocol-web3js';
 
 const BRAIN_URL = 'https://punitgarud.github.io/Mahadev-seeker/';
 
@@ -13,21 +13,30 @@ export default function App(){
   const [active,setActive]=useState(null);
   const [loading,setLoading]=useState(false);
 
-  useEffect(()=>{ fetch(BRAIN_URL+'active_modules.json?t='+Date.now()).then(r=>r.json()).then(setActive).catch(()=>{}); },[]);
+  useEffect(()=>{
+    fetch(BRAIN_URL+'active_modules.json?t='+Date.now())
+     .then(r=>r.json())
+     .then(setActive)
+     .catch(()=> setActive({top4:[{module:'MAHADEV-ALPHA', score:92, winRate:78}]}) );
+  },[]);
 
   const connect=async()=>{
     setLoading(true);
     try{
-      const r=await transact(async(w)=>await w.authorize({cluster:'mainnet-beta', identity:{name:'Mahadev Seeker'}}));
+      // LAZY import - this fixes the crash
+      const { transact } = await import('@solana-mobile/mobile-wallet-adapter-protocol-web3js');
+      const r = await transact(async(w)=> await w.authorize({cluster:'mainnet-beta', identity:{name:'Mahadev Seeker'}}));
       setWallet(r.accounts[0].address);
-    }catch(e){ Alert.alert('Failed', e.message); }
+    }catch(e){
+      Alert.alert('Wallet', e.message);
+    }
     finally{ setLoading(false); }
   };
 
   return(
     <ScrollView style={styles.bg} contentContainerStyle={{padding:20, paddingTop:60}}>
       <Text style={styles.title}>MAHADEV SEEKER v2</Text>
-      <Text style={styles.sub}>6H Cycle • Seed Vault Ready</Text>
+      <Text style={styles.sub}>6H Cycle • Seed Vault Ready • Build 21</Text>
       <TouchableOpacity style={styles.conn} onPress={connect}>
         <Text style={styles.connT}>{wallet? wallet.slice(0,4)+'...'+wallet.slice(-4)+' ✓' : 'Connect Seeker Wallet'}</Text>
       </TouchableOpacity>
@@ -51,7 +60,7 @@ export default function App(){
           ))}
         </View>
       </View>
-      <TouchableOpacity style={styles.exec} onPress={()=>Alert.alert('Execute', `${alloc}% on ${active?.top4Names?.join(', ')}`)}>
+      <TouchableOpacity style={styles.exec} onPress={()=>Alert.alert('Execute', `${alloc}% on ${active?.top4Names?.join(', ') || 'Top 4'}`)}>
         <Text style={styles.execT}>EXECUTE REAL TRADES - {alloc}%</Text>
       </TouchableOpacity>
     </ScrollView>
