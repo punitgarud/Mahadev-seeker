@@ -1,15 +1,15 @@
 {
   "name": "mahadev-seeker",
   "version": "1.0.0",
-  "main": "App.js",
+  "main": "./index.js",
   "dependencies": {
     "expo": "~51.0.10",
     "react": "18.2.0",
     "react-native": "0.74.5",
-    "expo-standard-web-crypto": "^1.0.5",
+    "react-native-quick-crypto": "^0.7.5",
+    "buffer": "^6.0.3",
     "@solana/web3.js": "^1.98.0",
     "@solana-mobile/mobile-wallet-adapter-protocol": "2.0.1",
-    "@solana-mobile/mobile-wallet-adapter-protocol-web3js": "2.0.2",
-    "buffer": "^6.0.3"
+    "@solana-mobile/mobile-wallet-adapter-protocol-web3js": "2.0.2"
   }
 }
